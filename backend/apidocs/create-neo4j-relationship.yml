@@ -1,0 +1,54 @@
+summary: "Create a Neo4j Node"
+description: "Create a neo4j relationship with dynamic properties"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+parameters:
+- in: "body"
+  name: "body"
+  description: "Accepts neo4j relationship object"
+  required: "true"
+  schema:
+    type: "object"
+    properties:
+      name:
+        description: "Node name"
+        type: "string"
+      nodeA:
+        description: "Node A"
+        type: "string"
+      nodeB:
+        description: "Node B"
+        type: "string"
+      properties:
+        type: "object"
+        description: "Optional properties defined by a key value object"
+
+    example: {
+        'name': 'USE_LANGUAGE',
+        'node_a': 'Framework',
+        'node_b': "Language",
+        'properties': { 'typed': 'no', 'latestVersion': '17'}
+    }
+responses:
+  201:
+    description: "Neo4j Node Created"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+        message:
+          type: "string"
+        status:
+          type: "integer"
+  500:
+    description: "Error Creating Neo4j Node"
+    schema:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+        status:
+          type: "integer"

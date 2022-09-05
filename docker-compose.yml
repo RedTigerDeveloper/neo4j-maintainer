@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  neo4j:
+    container_name: neo4j-db
+    image: neo4j:4.4.6
+    restart: unless-stopped
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    networks:
+      - backend
+    volumes:
+      - .docker-compose/conf:/conf
+      - .docker-compose/data:/data
+      - .docker-compose/import:/import
+      - .docker-compose/logs:/logs
+      - .docker-compose/plugins:/plugins
+    environment:
+      - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASS}
+      # Raise memory limits
+      - NEO4J_dbms_memory_pagecache_size=256MB
+      - NEO4J_dbms.memory.heap.initial_size=256MB
+      - NEO4J_dbms_memory_heap_max__size=256MB
+
+  backend:
+    build: ./backend
+    container_name: neo4j-backend
+    depends_on:
+      - neo4j
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    volumes:
+      - .backend:/app/queries
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASS=${NEO4J_PASS}
+
+  frontend:
+    build: ./frontend
+    container_name: neo4j-frontend
+    depends_on:
+      - neo4j
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - backend
+
+networks:
+  backend:
+    # Use a custom driver
+    driver: bridge

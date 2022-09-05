@@ -1,0 +1,5 @@
+neo4j==4.4.3
+Flask==2.1.2
+gunicorn==20.1.0
+Flask-Cors==3.0.10
+flasgger==0.9.5

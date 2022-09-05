@@ -1,0 +1,20 @@
+summary: "Neo4j node names"
+description: "Get all node names saved on neo4j database"
+produces:
+- "application/json"
+
+responses:
+  200:
+    description: "Neo4j existing node name"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: string
+          default: []
+        message:
+          type: "string"
+        status:
+          type: "integer"

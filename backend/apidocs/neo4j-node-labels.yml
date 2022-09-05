@@ -1,0 +1,21 @@
+summary: "Neo4j labels"
+description: "Get all labels saved on neo4j database"
+produces:
+- "application/json"
+
+responses:
+  200:
+    description: "Neo4j existing labels"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: string
+          default: []
+
+        message:
+          type: "string"
+        status:
+          type: "integer"

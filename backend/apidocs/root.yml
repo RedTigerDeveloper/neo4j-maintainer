@@ -1,0 +1,17 @@
+summary: "Neo4j root endpoint"
+description: "Root endpoint"
+produces:
+- "application/json"
+
+responses:
+  200:
+    description: "Neo4j Maintainer root endpoint"
+    schema:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+        message:
+          type: "string"
+        status:
+          type: "integer"
