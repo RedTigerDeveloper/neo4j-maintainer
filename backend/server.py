@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from flasgger.utils import swag_from
 from flasgger import Swagger
+from neo4j.exceptions import Neo4jError
 
 
 NEO4J_CONFIG = {
@@ -104,23 +105,17 @@ def create_neo4j_connection():
 
 
 def write_on_neo4j(query):
-    neo4j_connection = None
-    try:
-        neo4j_connection = create_neo4j_connection()
-        return neo4j_connection.write(query)
-    finally:
-        if neo4j_connection is not None:
-            neo4j_connection.close()
+    neo4j_connection = create_neo4j_connection()
+    result = neo4j_connection.write(query)
+    neo4j_connection.close()
+    return result
 
 
 def read_from_neo4j(query):
-    neo4j_connection = None
-    try:
-        neo4j_connection = create_neo4j_connection()
-        return neo4j_connection.read(query)
-    finally:
-        if neo4j_connection is not None:
-            neo4j_connection.close()
+    neo4j_connection = create_neo4j_connection()
+    result = neo4j_connection.read(query)
+    neo4j_connection.close()
+    return result
 
 
 def create_neo4j_node(neo4j_node: Neo4jNode):
@@ -160,6 +155,14 @@ def create_neo4j_relationship(neo4j_relationship: Neo4jRelationship):
         tx.run(query, **properties)
 
     return write_on_neo4j(create_relationship)
+
+
+def execute_command(query):
+
+    def create_cql(tx):
+        tx.run(query)
+
+    return write_on_neo4j(create_cql)
 
 
 def get_neo4j_labels():
@@ -234,6 +237,23 @@ def create_neo4j_relationship_request():
         message=f'Neo4j Node(={neo4j_relationship.name}) Created)'
     )
 
+@app.route("/neo4j/command/write", methods=['POST'])
+@swag_from('./apidocs/execute-neo4j-write-query.yml')
+def execute_neo4j_write_query():
+    body = request.get_json()
+    execute_command(body['command'])
+    return response(
+        status=201,
+        message=f'Neo4j Query Executed'
+    )
+
+
+@app.errorhandler(Neo4jError)
+def neo4j_exception(err):
+    return response(
+        status=500,
+        message=err.message
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
