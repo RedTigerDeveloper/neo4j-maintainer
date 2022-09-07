@@ -19,13 +19,12 @@ class Neo4jNode:
     labels = []
     properties = dict()
 
-    def __init__(self, node, name):
-        self.node = node
+    def __init__(self, name):
         self.name = name
 
     @staticmethod
     def from_dict(json):
-        neo4j_node = Neo4jNode(node=json['node'], name=json['name'])
+        neo4j_node = Neo4jNode(name=json['name'])
         if json.get('labels') is not None:
             neo4j_node.labels = json['labels']
         if json.get('properties') is not None:
@@ -33,7 +32,7 @@ class Neo4jNode:
         return neo4j_node
 
     def __repr__(self):
-        return f"Neo4jNode(name={self.name}, node={self.node}, labels={self.labels}, properties={self.properties})"
+        return f"Neo4jNode(name={self.name}, labels={self.labels}, properties={self.properties})"
 
 
 class Neo4jRelationship:
@@ -120,8 +119,7 @@ def read_from_neo4j(query):
 
 def create_neo4j_node(neo4j_node: Neo4jNode):
 
-    query_labels = [neo4j_node.node]
-    query_labels.extend(neo4j_node.labels)
+    query_labels = neo4j_node.labels
     query_labels = ':'.join(query_labels)
 
     properties = {'name': neo4j_node.name}

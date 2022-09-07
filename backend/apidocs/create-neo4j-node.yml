@@ -12,9 +12,6 @@ parameters:
   schema:
     type: "object"
     properties:
-      node:
-        description: "Node type"
-        type: "string"
       name:
         description: "Node name"
         type: "string"
@@ -26,7 +23,6 @@ parameters:
         description: "Optional properties defined by a key value object"
 
     example: {
-        'node': 'Language',
         'name': "Java",
         'labels': ['Language','Backend', 'Fullstack'],
         'properties': { 'typed': 'no', 'latestVersion': '17'}
