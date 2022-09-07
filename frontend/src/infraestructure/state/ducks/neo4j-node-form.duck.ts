@@ -3,14 +3,12 @@ import { NodeProperties } from '../shared/node-properties.state';
 
 
 export interface Neo4jNodeFormState {
-  node: string;
   nodeName: string;
   nodeLabels: string[];
   properties: NodeProperties[];
 }
 
 const initialState: Neo4jNodeFormState = {
-    node: '',
     nodeName: '',
     nodeLabels: [],
     properties: []
@@ -20,9 +18,6 @@ export const neo4jNodeForm = createSlice({
   name: 'neo4jNodeForm',
   initialState,
   reducers: {
-    setNode:(state, action: PayloadAction<string>) => {
-      state.node = action.payload
-   }, 
     setNodeName: (state, action: PayloadAction<string>) => {
        state.nodeName = action.payload
     },
@@ -46,6 +41,6 @@ export const neo4jNodeForm = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setNodeName, setNodeLabels, setNode, addNodeProperties, resetNodeProperties, setProperties } = neo4jNodeForm.actions
+export const { setNodeName, setNodeLabels, addNodeProperties, resetNodeProperties, setProperties } = neo4jNodeForm.actions
 
 export default neo4jNodeForm.reducer

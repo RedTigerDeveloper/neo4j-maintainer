@@ -21,7 +21,7 @@ export default function NameEntityInput(props: CustomInputProps<string>) {
           id="outlined-name"
           error={error.error}
           {...rest}
-          label="Nombre"
+          label="Nombre Nodo"
           // value={transformValue(value)}
           value={value}
           placeholder="Ingrese el nombre del nodo"

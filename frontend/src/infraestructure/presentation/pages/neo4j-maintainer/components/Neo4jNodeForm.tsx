@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
-import SelectNodeInput from './SelectNodeInput';
 import NameEntityInput from './NameEntityInput';
 import SelectLabelInput from './SelectLabelInput';
 import SaveAndCancelButtons from '../../../shared/components/SaveAndCancelButtons';
@@ -15,8 +14,8 @@ import KeyValueInput from '../../../shared/components/KeyValueInput';
 export default function Neo4jNodeForm() {
 
   const { 
-    node, nodeName, nodeLabels, nodeProperties, 
-    setNode, setNodeName, setNodeLabels, resetNodeProperties, setProperties 
+    nodeName, nodeLabels, nodeProperties, 
+    setNodeName, setNodeLabels, resetNodeProperties, setProperties 
   } = useNeo4jNodeFormState()
   const [formValid, setFormValid] = useState(false)
 
@@ -37,7 +36,6 @@ export default function Neo4jNodeForm() {
     if (formValid) {
 
       let neo4jNode: CreateNeo4jNodeDTO = {
-        node,
         name: nodeName,
         labels: nodeLabels,
       }
@@ -62,25 +60,24 @@ export default function Neo4jNodeForm() {
   }
 
   const handleOnCancel = () => {
-    setNode('')
     setNodeName('')
     setNodeLabels([])
     resetNodeProperties()
   }
 
   useEffect(() => {
-    setFormValid(![node, nodeName].some(x => x === ''))
-  }, [node, nodeName, nodeLabels])
+    setFormValid(![nodeName].some(x => x === ''))
+  }, [nodeName, nodeLabels])
 
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <SelectNodeInput value={node} onChange={setNode} />
+          <NameEntityInput value={nodeName} onChange={handleOnNameChange} />
         </Grid>
         <Grid item xs={6}>
-          <NameEntityInput value={nodeName} onChange={handleOnNameChange} />
+          <p>* Nombre de nodo es guardado como propiedad "name"</p>
         </Grid>
         <Grid item xs={12}>
           <SelectLabelInput value={nodeLabels} onChange={handleOnLabelsChange} />
