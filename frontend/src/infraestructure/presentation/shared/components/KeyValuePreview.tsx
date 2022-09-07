@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from '@mui/material';
 import { KeyValueData } from '../../pages/neo4j-maintainer/dto/key-value-data.dto';
 
 
@@ -25,17 +25,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 interface Props {
     keyValueData: KeyValueData[];
+    onRemove: (key: string) => void;
 }
 
 function EmptyRows() {
     return (
         <StyledTableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <StyledTableCell component="th" scope="row" colSpan={2} align="center">No hay propiedades definidas</StyledTableCell>
+            <StyledTableCell component="th" scope="row" colSpan={3} align="center">No hay propiedades definidas</StyledTableCell>
         </StyledTableRow>
     )
 }
 
-export default function KeyValuePreview({ keyValueData }: Props) {
+export default function KeyValuePreview({ keyValueData, onRemove }: Props) {
     const isEmpty = keyValueData?.length === 0
     return (
         <TableContainer component={Paper}>
@@ -44,6 +45,7 @@ export default function KeyValuePreview({ keyValueData }: Props) {
                     <TableRow>
                         <StyledTableCell>Clave</StyledTableCell>
                         <StyledTableCell >Valor</StyledTableCell>
+                        <StyledTableCell align="center">Eliminar</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -52,6 +54,9 @@ export default function KeyValuePreview({ keyValueData }: Props) {
                             <StyledTableRow key={d.key} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <StyledTableCell component="th" scope="row">{d.key}</StyledTableCell>
                                 <StyledTableCell>{d.value}</StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <Button onClick={e => onRemove(d.key)}>ELIMINAR</Button>
+                                </StyledTableCell>
                             </StyledTableRow>
                         ))
                     }

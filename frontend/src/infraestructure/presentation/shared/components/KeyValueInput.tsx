@@ -14,9 +14,17 @@ export default function KeyValueInput({ value, onChange }: Props) {
             ...keyValueData,
             key: keyValueData.key.replaceAll(' ', '_')
         }
+        const newValues = value.filter(d => d.key !== keyValueData.key)
         onChange([
-            ...value,
+            ...newValues,
             sanitized
+        ])
+    }
+
+    const handleOnRemoveKeyValue = (key: string) => {
+        const newValues = value.filter(d => d.key !== key)
+        onChange([
+            ...newValues
         ])
     }
 
@@ -26,7 +34,7 @@ export default function KeyValueInput({ value, onChange }: Props) {
                 <KeyValueSelector onAddKeyValue={handleOnKeyValueAdded} />
             </Grid>
             <Grid item xs={12} >
-                <KeyValuePreview keyValueData={value} />
+                <KeyValuePreview keyValueData={value} onRemove={handleOnRemoveKeyValue} />
             </Grid>
         </Grid>
 
