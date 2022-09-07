@@ -5,7 +5,7 @@ export interface UiState {
 }
 
 const initialState: UiState = {
-  dashboardTitle: 'Developer factory',
+  dashboardTitle: 'Neo4j Maintainer',
 }
 
 export const uiSlice = createSlice({

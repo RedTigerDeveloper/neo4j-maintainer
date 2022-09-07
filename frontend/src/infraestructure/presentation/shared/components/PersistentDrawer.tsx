@@ -24,7 +24,6 @@ import { RelationshipForm } from '../../pages/neo4j-maintainer/components/Relati
 import EntityForm from '../../pages/neo4j-maintainer/components/Neo4jNodeForm';
 import { useUiState } from '../../../state/hooks/useUiState';
 import { Button, Container, SvgIcon } from '@mui/material';
-import DoneIcon from '@mui/icons-material/Done';
 
 const drawerWidth = 240;
 
